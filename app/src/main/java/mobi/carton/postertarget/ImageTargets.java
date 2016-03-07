@@ -64,8 +64,6 @@ public class ImageTargets extends Activity
 
     private GestureDetector mGestureDetector;
 
-    // The textures we will use for rendering:
-    private Vector<Texture> mTextures;
 
     private boolean mSwitchDatasetAsap = false;
     private boolean mFlash = false;
@@ -102,10 +100,6 @@ public class ImageTargets extends Activity
                 .initAR(this, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         mGestureDetector = new GestureDetector(this, new GestureListener());
-
-        // Load any sample specific textures:
-        mTextures = new Vector<>();
-        loadTextures();
 
         mIsDroidDevice = android.os.Build.MODEL.toLowerCase().startsWith(
                 "droid");
@@ -146,20 +140,6 @@ public class ImageTargets extends Activity
 
             return true;
         }
-    }
-
-
-    // We want to load specific textures from the APK, which we will later use
-    // for rendering.
-
-    private void loadTextures()
-    {
-        mTextures.add(Texture.loadTextureFromApk("TextureTeapotBrass.png",
-                getAssets()));
-        mTextures.add(Texture.loadTextureFromApk("TextureTeapotBlue.png",
-                getAssets()));
-        mTextures.add(Texture.loadTextureFromApk("TextureTeapotRed.png",
-                getAssets()));
     }
 
 
@@ -257,10 +237,6 @@ public class ImageTargets extends Activity
             Log.e(LOGTAG, e.getString());
         }
 
-        // Unload texture:
-        mTextures.clear();
-        mTextures = null;
-
         System.gc();
     }
 
@@ -277,7 +253,6 @@ public class ImageTargets extends Activity
         mGlView.init(translucent, depthSize, stencilSize);
 
         mRenderer = new ImageTargetRenderer(this, vuforiaAppSession);
-        mRenderer.setTextures(mTextures);
         mGlView.setRenderer(mRenderer);
 
     }

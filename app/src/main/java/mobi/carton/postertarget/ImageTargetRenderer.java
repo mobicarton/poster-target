@@ -29,14 +29,11 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 // The renderer class for the ImageTargets sample.
-public class ImageTargetRenderer implements GLSurfaceView.Renderer
-{
+public class ImageTargetRenderer implements GLSurfaceView.Renderer {
     private static final String LOGTAG = "ImageTargetRenderer";
 
     private SampleApplicationSession vuforiaAppSession;
     private ImageTargets mActivity;
-
-    private Vector<Texture> mTextures;
 
     private int shaderProgramID;
 
@@ -49,8 +46,6 @@ public class ImageTargetRenderer implements GLSurfaceView.Renderer
     private int mvpMatrixHandle;
 
     private int texSampler2DHandle;
-
-    private Teapot mTeapot;
 
 
     private Renderer mRenderer;
@@ -106,27 +101,12 @@ public class ImageTargetRenderer implements GLSurfaceView.Renderer
 
 
     // Function for initializing the renderer.
-    private void initRendering()
-    {
-        mTeapot = new Teapot();
+    private void initRendering() {
 
         mRenderer = Renderer.getInstance();
 
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, Vuforia.requiresAlpha() ? 0.0f
                 : 1.0f);
-
-        for (Texture t : mTextures)
-        {
-            GLES20.glGenTextures(1, t.mTextureID, 0);
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, t.mTextureID[0]);
-            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-                    GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
-            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-                    GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
-            GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA,
-                    t.mWidth, t.mHeight, 0, GLES20.GL_RGBA,
-                    GLES20.GL_UNSIGNED_BYTE, t.mData);
-        }
 
         shaderProgramID = SampleUtils.createProgramFromShaderSrc(
                 CubeShaders.CUBE_MESH_VERTEX_SHADER,
@@ -147,7 +127,6 @@ public class ImageTargetRenderer implements GLSurfaceView.Renderer
         // Hide the Loading Dialog
         mActivity.loadingDialogHandler
                 .sendEmptyMessage(LoadingDialogHandler.HIDE_LOADING_DIALOG);
-
     }
 
 
@@ -204,31 +183,13 @@ public class ImageTargetRenderer implements GLSurfaceView.Renderer
 
             if (!mActivity.isExtendedTrackingActive())
             {
-                GLES20.glVertexAttribPointer(vertexHandle, 3, GLES20.GL_FLOAT,
-                        false, 0, mTeapot.getVertices());
-                GLES20.glVertexAttribPointer(normalHandle, 3, GLES20.GL_FLOAT,
-                        false, 0, mTeapot.getNormals());
-                GLES20.glVertexAttribPointer(textureCoordHandle, 2,
-                        GLES20.GL_FLOAT, false, 0, mTeapot.getTexCoords());
-
                 GLES20.glEnableVertexAttribArray(vertexHandle);
                 GLES20.glEnableVertexAttribArray(normalHandle);
                 GLES20.glEnableVertexAttribArray(textureCoordHandle);
 
-                // activate texture 0, bind it, and pass to shader
-                GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-                GLES20.glBindTexture(GLES20.GL_TEXTURE_2D,
-                        mTextures.get(textureIndex).mTextureID[0]);
-                GLES20.glUniform1i(texSampler2DHandle, 0);
-
                 // pass the model view matrix to the shader
                 GLES20.glUniformMatrix4fv(mvpMatrixHandle, 1, false,
                         modelViewProjection, 0);
-
-                // finally draw the teapot
-                GLES20.glDrawElements(GLES20.GL_TRIANGLES,
-                        mTeapot.getNumObjectIndex(), GLES20.GL_UNSIGNED_SHORT,
-                        mTeapot.getIndices());
 
                 // disable the enabled arrays
                 GLES20.glDisableVertexAttribArray(vertexHandle);
@@ -246,17 +207,8 @@ public class ImageTargetRenderer implements GLSurfaceView.Renderer
     }
 
 
-    private void printUserData(Trackable trackable)
-    {
+    private void printUserData(Trackable trackable) {
         String userData = (String) trackable.getUserData();
         Log.d(LOGTAG, "UserData:Retreived User Data	\"" + userData + "\"");
     }
-
-
-    public void setTextures(Vector<Texture> textures)
-    {
-        mTextures = textures;
-
-    }
-
 }
