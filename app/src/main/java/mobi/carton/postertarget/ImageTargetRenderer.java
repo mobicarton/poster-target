@@ -52,8 +52,6 @@ public class ImageTargetRenderer implements GLSurfaceView.Renderer
 
     private Teapot mTeapot;
 
-    private float kBuildingScale = 12.0f;
-    private SampleApplication3DModel mBuildingsModel;
 
     private Renderer mRenderer;
 
@@ -145,15 +143,6 @@ public class ImageTargetRenderer implements GLSurfaceView.Renderer
         texSampler2DHandle = GLES20.glGetUniformLocation(shaderProgramID,
                 "texSampler2D");
 
-        try
-        {
-            mBuildingsModel = new SampleApplication3DModel();
-            mBuildingsModel.loadModel(mActivity.getResources().getAssets(),
-                    "ImageTargets/Buildings.txt");
-        } catch (IOException e)
-        {
-            Log.e(LOGTAG, "Unable to load buildings");
-        }
 
         // Hide the Loading Dialog
         mActivity.loadingDialogHandler
@@ -205,11 +194,6 @@ public class ImageTargetRenderer implements GLSurfaceView.Renderer
                         OBJECT_SCALE_FLOAT);
                 Matrix.scaleM(modelViewMatrix, 0, OBJECT_SCALE_FLOAT,
                         OBJECT_SCALE_FLOAT, OBJECT_SCALE_FLOAT);
-            } else
-            {
-                Matrix.rotateM(modelViewMatrix, 0, 90.0f, 1.0f, 0, 0);
-                Matrix.scaleM(modelViewMatrix, 0, kBuildingScale,
-                        kBuildingScale, kBuildingScale);
             }
 
             Matrix.multiplyMM(modelViewProjection, 0, vuforiaAppSession
@@ -250,30 +234,6 @@ public class ImageTargetRenderer implements GLSurfaceView.Renderer
                 GLES20.glDisableVertexAttribArray(vertexHandle);
                 GLES20.glDisableVertexAttribArray(normalHandle);
                 GLES20.glDisableVertexAttribArray(textureCoordHandle);
-            } else
-            {
-                GLES20.glDisable(GLES20.GL_CULL_FACE);
-                GLES20.glVertexAttribPointer(vertexHandle, 3, GLES20.GL_FLOAT,
-                        false, 0, mBuildingsModel.getVertices());
-                GLES20.glVertexAttribPointer(normalHandle, 3, GLES20.GL_FLOAT,
-                        false, 0, mBuildingsModel.getNormals());
-                GLES20.glVertexAttribPointer(textureCoordHandle, 2,
-                        GLES20.GL_FLOAT, false, 0, mBuildingsModel.getTexCoords());
-
-                GLES20.glEnableVertexAttribArray(vertexHandle);
-                GLES20.glEnableVertexAttribArray(normalHandle);
-                GLES20.glEnableVertexAttribArray(textureCoordHandle);
-
-                GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-                GLES20.glBindTexture(GLES20.GL_TEXTURE_2D,
-                        mTextures.get(3).mTextureID[0]);
-                GLES20.glUniformMatrix4fv(mvpMatrixHandle, 1, false,
-                        modelViewProjection, 0);
-                GLES20.glUniform1i(texSampler2DHandle, 0);
-                GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0,
-                        mBuildingsModel.getNumObjectVertex());
-
-                SampleUtils.checkGLError("Renderer DrawBuildings");
             }
 
             SampleUtils.checkGLError("Render Frame");

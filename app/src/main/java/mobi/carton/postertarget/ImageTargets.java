@@ -160,8 +160,6 @@ public class ImageTargets extends Activity
                 getAssets()));
         mTextures.add(Texture.loadTextureFromApk("TextureTeapotRed.png",
                 getAssets()));
-        mTextures.add(Texture.loadTextureFromApk("ImageTargets/Buildings.jpeg",
-                getAssets()));
     }
 
 
