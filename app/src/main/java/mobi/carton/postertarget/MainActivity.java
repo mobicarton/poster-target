@@ -8,7 +8,6 @@ countries.
 package mobi.carton.postertarget;
 
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
@@ -35,7 +34,10 @@ import com.qualcomm.vuforia.Vuforia;
 
 import java.util.ArrayList;
 
-public class MainActivity extends Activity
+import mobi.carton.library.CartonActivity;
+
+
+public class MainActivity extends CartonActivity
         implements
         SampleApplicationControl {
 

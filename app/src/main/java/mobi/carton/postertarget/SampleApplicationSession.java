@@ -3,7 +3,6 @@ package mobi.carton.postertarget;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
 
@@ -395,10 +394,8 @@ public class SampleApplicationSession
     // Stores screen dimensions
     private void storeScreenDimensions() {
         // Query display dimensions:
-        DisplayMetrics metrics = new DisplayMetrics();
-        mActivity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        mScreenWidth = metrics.widthPixels;
-        mScreenHeight = metrics.heightPixels;
+        mScreenWidth = mActivity.getWindow().getAttributes().width;
+        mScreenHeight = mActivity.getWindow().getAttributes().height;
     }
 
 
@@ -422,22 +419,13 @@ public class SampleApplicationSession
         config.setPosition(new Vec2I(0, 0));
 
         int xSize, ySize;
-        if (mIsPortrait) {
-            xSize = (int) (vm.getHeight() * (mScreenHeight / (float) vm.getWidth()));
+
+        xSize = mScreenWidth;
+        ySize = (int) (vm.getHeight() * (mScreenWidth / (float) vm.getWidth()));
+
+        if (ySize < mScreenHeight) {
+            xSize = (int) (mScreenHeight * (vm.getWidth() / (float) vm.getHeight()));
             ySize = mScreenHeight;
-
-            if (xSize < mScreenWidth) {
-                xSize = mScreenWidth;
-                ySize = (int) (mScreenWidth * (vm.getWidth() / (float) vm.getHeight()));
-            }
-        } else {
-            xSize = mScreenWidth;
-            ySize = (int) (vm.getHeight() * (mScreenWidth / (float) vm.getWidth()));
-
-            if (ySize < mScreenHeight) {
-                xSize = (int) (mScreenHeight * (vm.getWidth() / (float) vm.getHeight()));
-                ySize = mScreenHeight;
-            }
         }
 
         config.setSize(new Vec2I(xSize, ySize));
@@ -454,5 +442,4 @@ public class SampleApplicationSession
     private boolean isARRunning() {
         return mStarted;
     }
-
 }
