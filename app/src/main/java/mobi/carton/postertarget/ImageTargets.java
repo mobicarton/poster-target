@@ -14,8 +14,6 @@ import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.hardware.Camera;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -23,10 +21,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
-import android.widget.Toast;
 
 import com.qualcomm.vuforia.CameraDevice;
 import com.qualcomm.vuforia.DataSet;
@@ -39,7 +34,6 @@ import com.qualcomm.vuforia.TrackerManager;
 import com.qualcomm.vuforia.Vuforia;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 public class ImageTargets extends Activity
         implements
@@ -51,9 +45,6 @@ public class ImageTargets extends Activity
     SampleApplicationSession vuforiaAppSession;
 
     private DataSet mCurrentDataset;
-    private int mCurrentDatasetSelectionIndex = 0;
-    private int mStartDatasetsIndex = 0;
-    private int mDatasetsNumber = 0;
     private ArrayList<String> mDatasetStrings = new ArrayList<>();
 
     // Our OpenGL view:
@@ -66,11 +57,7 @@ public class ImageTargets extends Activity
 
 
     private boolean mSwitchDatasetAsap = false;
-    private boolean mFlash = false;
-    private boolean mContAutofocus = false;
-    private boolean mExtendedTracking = false;
 
-    private View mFlashOptionView;
 
     private RelativeLayout mUILayout;
 
@@ -199,19 +186,6 @@ public class ImageTargets extends Activity
             mGlView.onPause();
         }
 
-        // Turn off the flash
-        if (mFlashOptionView != null && mFlash)
-        {
-            // OnCheckedChangeListener is called upon changing the checked state
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-            {
-                ((Switch) mFlashOptionView).setChecked(false);
-            } else
-            {
-                ((CheckBox) mFlashOptionView).setChecked(false);
-            }
-        }
-
         try
         {
             vuforiaAppSession.pauseAR();
@@ -297,6 +271,7 @@ public class ImageTargets extends Activity
         if (mCurrentDataset == null)
             return false;
 
+        int mCurrentDatasetSelectionIndex = 0;
         if (!mCurrentDataset.load(
                 mDatasetStrings.get(mCurrentDatasetSelectionIndex),
                 STORAGE_TYPE.STORAGE_APPRESOURCE))
@@ -384,14 +359,6 @@ public class ImageTargets extends Activity
             {
                 Log.e(LOGTAG, e.getString());
             }
-
-            boolean result = CameraDevice.getInstance().setFocusMode(
-                    CameraDevice.FOCUS_MODE.FOCUS_MODE_CONTINUOUSAUTO);
-
-            if (result)
-                mContAutofocus = true;
-            else
-                Log.e(LOGTAG, "Unable to enable continuous autofocus");
         } else
         {
             Log.e(LOGTAG, exception.getString());
@@ -499,8 +466,7 @@ public class ImageTargets extends Activity
 
 
     @Override
-    public boolean doStopTrackers()
-    {
+    public boolean doStopTrackers() {
         // Indicate if the trackers were stopped correctly
 
         Tracker objectTracker = TrackerManager.getInstance().getTracker(
@@ -513,8 +479,7 @@ public class ImageTargets extends Activity
 
 
     @Override
-    public boolean doDeinitTrackers()
-    {
+    public boolean doDeinitTrackers() {
         // Indicate if the trackers were deinitialized correctly
 
         TrackerManager tManager = TrackerManager.getInstance();
@@ -525,15 +490,13 @@ public class ImageTargets extends Activity
 
 
     @Override
-    public boolean onTouchEvent(MotionEvent event)
-    {
+    public boolean onTouchEvent(MotionEvent event) {
         // Process the Gestures
         return mGestureDetector.onTouchEvent(event);
     }
 
 
-    boolean isExtendedTrackingActive()
-    {
-        return mExtendedTracking;
+    boolean isExtendedTrackingActive() {
+        return false;
     }
 }

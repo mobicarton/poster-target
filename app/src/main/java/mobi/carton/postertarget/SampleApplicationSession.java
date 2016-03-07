@@ -53,7 +53,7 @@ public class SampleApplicationSession implements Vuforia.UpdateCallbackInterface
     // and the Android onDestroy() life cycle event. If the application is
     // destroyed while a data set is still being loaded, then we wait for the
     // loading operation to finish before shutting down Vuforia:
-    private Object mShutdownLock = new Object();
+    private final Object mShutdownLock = new Object();
 
     // Vuforia initialization flags:
     private int mVuforiaFlags = 0;
@@ -108,9 +108,7 @@ public class SampleApplicationSession implements Vuforia.UpdateCallbackInterface
         if (mInitVuforiaTask != null)
         {
             String logMessage = "Cannot initialize SDK twice";
-            vuforiaException = new SampleApplicationException(
-                    SampleApplicationException.VUFORIA_ALREADY_INITIALIZATED,
-                    logMessage);
+            vuforiaException = new SampleApplicationException(logMessage);
             Log.e(LOGTAG, logMessage);
         }
 
@@ -123,9 +121,7 @@ public class SampleApplicationSession implements Vuforia.UpdateCallbackInterface
             } catch (Exception e)
             {
                 String logMessage = "Initializing Vuforia SDK failed";
-                vuforiaException = new SampleApplicationException(
-                        SampleApplicationException.INITIALIZATION_FAILURE,
-                        logMessage);
+                vuforiaException = new SampleApplicationException(logMessage);
                 Log.e(LOGTAG, logMessage);
             }
         }
@@ -143,8 +139,7 @@ public class SampleApplicationSession implements Vuforia.UpdateCallbackInterface
         {
             error = "Camera already running, unable to open again";
             Log.e(LOGTAG, error);
-            throw new SampleApplicationException(
-                    SampleApplicationException.CAMERA_INITIALIZATION_FAILURE, error);
+            throw new SampleApplicationException(error);
         }
 
         mCamera = camera;
@@ -152,8 +147,7 @@ public class SampleApplicationSession implements Vuforia.UpdateCallbackInterface
         {
             error = "Unable to open camera device: " + camera;
             Log.e(LOGTAG, error);
-            throw new SampleApplicationException(
-                    SampleApplicationException.CAMERA_INITIALIZATION_FAILURE, error);
+            throw new SampleApplicationException(error);
         }
 
         if (!CameraDevice.getInstance().selectVideoMode(
@@ -161,8 +155,7 @@ public class SampleApplicationSession implements Vuforia.UpdateCallbackInterface
         {
             error = "Unable to set video mode";
             Log.e(LOGTAG, error);
-            throw new SampleApplicationException(
-                    SampleApplicationException.CAMERA_INITIALIZATION_FAILURE, error);
+            throw new SampleApplicationException(error);
         }
 
         // Configure the rendering of the video background
@@ -172,8 +165,7 @@ public class SampleApplicationSession implements Vuforia.UpdateCallbackInterface
         {
             error = "Unable to start camera device: " + camera;
             Log.e(LOGTAG, error);
-            throw new SampleApplicationException(
-                    SampleApplicationException.CAMERA_INITIALIZATION_FAILURE, error);
+            throw new SampleApplicationException(error);
         }
 
         setProjectionMatrix();
@@ -233,14 +225,10 @@ public class SampleApplicationSession implements Vuforia.UpdateCallbackInterface
             Vuforia.deinit();
 
             if (!unloadTrackersResult)
-                throw new SampleApplicationException(
-                        SampleApplicationException.UNLOADING_TRACKERS_FAILURE,
-                        "Failed to unload trackers\' data");
+                throw new SampleApplicationException("Failed to unload trackers\' data");
 
             if (!deinitTrackersResult)
-                throw new SampleApplicationException(
-                        SampleApplicationException.TRACKERS_DEINITIALIZATION_FAILURE,
-                        "Failed to deinitialize trackers");
+                throw new SampleApplicationException("Failed to deinitialize trackers");
 
         }
     }
@@ -272,16 +260,14 @@ public class SampleApplicationSession implements Vuforia.UpdateCallbackInterface
 
 
     // Gets the projection matrix to be used for rendering
-    public Matrix44F getProjectionMatrix()
-    {
+    public Matrix44F getProjectionMatrix() {
         return mProjectionMatrix;
     }
 
 
     // Callback called every cycle
     @Override
-    public void QCAR_onUpdate(State s)
-    {
+    public void QCAR_onUpdate(State s) {
         mSessionControl.onQCARUpdate(s);
     }
 
@@ -302,19 +288,6 @@ public class SampleApplicationSession implements Vuforia.UpdateCallbackInterface
             setProjectionMatrix();
         }
 
-    }
-
-
-    // Methods to be called to handle lifecycle
-    public void onResume()
-    {
-        Vuforia.onResume();
-    }
-
-
-    public void onPause()
-    {
-        Vuforia.onPause();
     }
 
 
@@ -381,7 +354,7 @@ public class SampleApplicationSession implements Vuforia.UpdateCallbackInterface
             // Done initializing Vuforia, proceed to next application
             // initialization status:
 
-            SampleApplicationException vuforiaException = null;
+            SampleApplicationException vuforiaException;
 
             if (result)
             {
@@ -400,18 +373,14 @@ public class SampleApplicationSession implements Vuforia.UpdateCallbackInterface
                     } catch (Exception e)
                     {
                         String logMessage = "Loading tracking data set failed";
-                        vuforiaException = new SampleApplicationException(
-                                SampleApplicationException.LOADING_TRACKERS_FAILURE,
-                                logMessage);
+                        vuforiaException = new SampleApplicationException(logMessage);
                         Log.e(LOGTAG, logMessage);
                         mSessionControl.onInitARDone(vuforiaException);
                     }
 
                 } else
                 {
-                    vuforiaException = new SampleApplicationException(
-                            SampleApplicationException.TRACKERS_INITIALIZATION_FAILURE,
-                            "Failed to initialize trackers");
+                    vuforiaException = new SampleApplicationException("Failed to initialize trackers");
                     mSessionControl.onInitARDone(vuforiaException);
                 }
             } else
@@ -429,9 +398,7 @@ public class SampleApplicationSession implements Vuforia.UpdateCallbackInterface
 
                 // Send Vuforia Exception to the application and call initDone
                 // to stop initialization process
-                vuforiaException = new SampleApplicationException(
-                        SampleApplicationException.INITIALIZATION_FAILURE,
-                        logMessage);
+                vuforiaException = new SampleApplicationException(logMessage);
                 mSessionControl.onInitARDone(vuforiaException);
             }
         }
@@ -464,9 +431,7 @@ public class SampleApplicationSession implements Vuforia.UpdateCallbackInterface
                 String logMessage = "Failed to load tracker data.";
                 // Error loading dataset
                 Log.e(LOGTAG, logMessage);
-                vuforiaException = new SampleApplicationException(
-                        SampleApplicationException.LOADING_TRACKERS_FAILURE,
-                        logMessage);
+                vuforiaException = new SampleApplicationException(logMessage);
             } else
             {
                 // Hint to the virtual machine that it would be a good time to
@@ -580,7 +545,7 @@ public class SampleApplicationSession implements Vuforia.UpdateCallbackInterface
         config.setEnabled(true);
         config.setPosition(new Vec2I(0, 0));
 
-        int xSize = 0, ySize = 0;
+        int xSize, ySize;
         if (mIsPortrait)
         {
             xSize = (int) (vm.getHeight() * (mScreenHeight / (float) vm

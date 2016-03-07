@@ -22,9 +22,6 @@ import com.qualcomm.vuforia.TrackableResult;
 import com.qualcomm.vuforia.VIDEO_BACKGROUND_REFLECTION;
 import com.qualcomm.vuforia.Vuforia;
 
-import java.io.IOException;
-import java.util.Vector;
-
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -44,8 +41,6 @@ public class ImageTargetRenderer implements GLSurfaceView.Renderer {
     private int textureCoordHandle;
 
     private int mvpMatrixHandle;
-
-    private int texSampler2DHandle;
 
 
     private Renderer mRenderer;
@@ -120,8 +115,6 @@ public class ImageTargetRenderer implements GLSurfaceView.Renderer {
                 "vertexTexCoord");
         mvpMatrixHandle = GLES20.glGetUniformLocation(shaderProgramID,
                 "modelViewProjectionMatrix");
-        texSampler2DHandle = GLES20.glGetUniformLocation(shaderProgramID,
-                "texSampler2D");
 
 
         // Hide the Loading Dialog
@@ -158,11 +151,6 @@ public class ImageTargetRenderer implements GLSurfaceView.Renderer {
             Matrix44F modelViewMatrix_Vuforia = Tool
                     .convertPose2GLMatrix(result.getPose());
             float[] modelViewMatrix = modelViewMatrix_Vuforia.getData();
-
-            int textureIndex = trackable.getName().equalsIgnoreCase("stones") ? 0
-                    : 1;
-            textureIndex = trackable.getName().equalsIgnoreCase("tarmac") ? 2
-                    : textureIndex;
 
             // deal with the modelview and projection matrices
             float[] modelViewProjection = new float[16];
