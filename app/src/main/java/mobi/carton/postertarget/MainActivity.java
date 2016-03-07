@@ -72,8 +72,7 @@ public class MainActivity extends Activity
     // Called when the activity first starts or the user navigates back to an
     // activity.
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOGTAG, "onCreate");
         super.onCreate(savedInstanceState);
 
@@ -83,15 +82,13 @@ public class MainActivity extends Activity
         mDatasetStrings.add("StonesAndChips.xml");
         mDatasetStrings.add("Tarmac.xml");
 
-        vuforiaAppSession
-                .initAR(this, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        vuforiaAppSession.initAR(this);
 
         mGestureDetector = new GestureDetector(this, new GestureListener());
 
-        mIsDroidDevice = android.os.Build.MODEL.toLowerCase().startsWith(
-                "droid");
-
+        mIsDroidDevice = android.os.Build.MODEL.toLowerCase().startsWith("droid");
     }
+
 
     // Process Single Tap event to trigger autofocus
     private class GestureListener extends
