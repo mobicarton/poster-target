@@ -23,7 +23,7 @@ public class ImageTargetRenderer
 
 
     private SampleApplicationSession vuforiaAppSession;
-    private ImageTargets mActivity;
+    private MainActivity mActivity;
 
     private Renderer mRenderer;
 
@@ -31,7 +31,7 @@ public class ImageTargetRenderer
     public boolean mIsActive;
 
 
-    public ImageTargetRenderer(ImageTargets activity, SampleApplicationSession session) {
+    public ImageTargetRenderer(MainActivity activity, SampleApplicationSession session) {
         mActivity = activity;
         vuforiaAppSession = session;
     }
