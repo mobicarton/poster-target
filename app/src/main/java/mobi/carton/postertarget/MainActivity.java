@@ -15,6 +15,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -33,6 +34,7 @@ import com.qualcomm.vuforia.Tracker;
 import com.qualcomm.vuforia.TrackerManager;
 import com.qualcomm.vuforia.Vuforia;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import mobi.carton.library.CartonActivity;
@@ -54,7 +56,7 @@ public class MainActivity extends CartonActivity
     private SampleApplicationGLView mGlView;
 
     // Our renderer:
-    private ImageTargetRenderer mRenderer;
+    private PosterTargetRenderer mRenderer;
 
     private GestureDetector mGestureDetector;
 
@@ -95,28 +97,23 @@ public class MainActivity extends CartonActivity
 
     // Process Single Tap event to trigger autofocus
     private class GestureListener extends
-            GestureDetector.SimpleOnGestureListener
-    {
+            GestureDetector.SimpleOnGestureListener {
         // Used to set autofocus one second after a manual focus is triggered
         private final Handler autofocusHandler = new Handler();
 
 
         @Override
-        public boolean onDown(MotionEvent e)
-        {
+        public boolean onDown(MotionEvent e) {
             return true;
         }
 
 
         @Override
-        public boolean onSingleTapUp(MotionEvent e)
-        {
+        public boolean onSingleTapUp(MotionEvent e) {
             // Generates a Handler to trigger autofocus
             // after 1 second
-            autofocusHandler.postDelayed(new Runnable()
-            {
-                public void run()
-                {
+            autofocusHandler.postDelayed(new Runnable() {
+                public void run() {
                     boolean result = CameraDevice.getInstance().setFocusMode(
                             CameraDevice.FOCUS_MODE.FOCUS_MODE_TRIGGERAUTO);
 
@@ -132,40 +129,33 @@ public class MainActivity extends CartonActivity
 
     // Called when the activity will start interacting with the user.
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         Log.d(LOGTAG, "onResume");
         super.onResume();
 
         // This is needed for some Droid devices to force portrait
-        if (mIsDroidDevice)
-        {
+        if (mIsDroidDevice) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
-        try
-        {
+        try {
             vuforiaAppSession.resumeAR();
-        } catch (SampleApplicationException e)
-        {
+        } catch (SampleApplicationException e) {
             Log.e(LOGTAG, e.getString());
         }
 
         // Resume the GL view:
-        if (mGlView != null)
-        {
+        if (mGlView != null) {
             mGlView.setVisibility(View.VISIBLE);
             mGlView.onResume();
         }
-
     }
 
 
     // Callback for configuration changes the activity handles itself
     @Override
-    public void onConfigurationChanged(Configuration config)
-    {
+    public void onConfigurationChanged(Configuration config) {
         Log.d(LOGTAG, "onConfigurationChanged");
         super.onConfigurationChanged(config);
 
@@ -175,22 +165,18 @@ public class MainActivity extends CartonActivity
 
     // Called when the system is about to start resuming a previous activity.
     @Override
-    protected void onPause()
-    {
+    protected void onPause() {
         Log.d(LOGTAG, "onPause");
         super.onPause();
 
-        if (mGlView != null)
-        {
+        if (mGlView != null) {
             mGlView.setVisibility(View.INVISIBLE);
             mGlView.onPause();
         }
 
-        try
-        {
+        try {
             vuforiaAppSession.pauseAR();
-        } catch (SampleApplicationException e)
-        {
+        } catch (SampleApplicationException e) {
             Log.e(LOGTAG, e.getString());
         }
     }
@@ -198,16 +184,13 @@ public class MainActivity extends CartonActivity
 
     // The final call you receive before your activity is destroyed.
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         Log.d(LOGTAG, "onDestroy");
         super.onDestroy();
 
-        try
-        {
+        try {
             vuforiaAppSession.stopAR();
-        } catch (SampleApplicationException e)
-        {
+        } catch (SampleApplicationException e) {
             Log.e(LOGTAG, e.getString());
         }
 
@@ -216,8 +199,7 @@ public class MainActivity extends CartonActivity
 
 
     // Initializes AR application components.
-    private void initApplicationAR()
-    {
+    private void initApplicationAR() {
         // Create OpenGL ES view:
         int depthSize = 16;
         int stencilSize = 0;
@@ -226,39 +208,35 @@ public class MainActivity extends CartonActivity
         mGlView = new SampleApplicationGLView(this);
         mGlView.init(translucent, depthSize, stencilSize);
 
-        mRenderer = new ImageTargetRenderer(this, vuforiaAppSession);
+        mRenderer = new PosterTargetRenderer(this, vuforiaAppSession);
         mGlView.setRenderer(mRenderer);
 
+        Handler handler = new TrackingHandler(this);
+        mRenderer.setHandlerTracking(handler);
     }
 
 
-    private void startLoadingAnimation()
-    {
-        mUILayout = (RelativeLayout) View.inflate(this, R.layout.camera_overlay,
-                null);
+    private void startLoadingAnimation() {
+        mUILayout = (RelativeLayout) View.inflate(this, R.layout.camera_overlay, null);
 
         mUILayout.setVisibility(View.VISIBLE);
         mUILayout.setBackgroundColor(Color.BLACK);
 
         // Gets a reference to the loading dialog
-        loadingDialogHandler.mLoadingDialogContainer = (ProgressBar) mUILayout
-                .findViewById(R.id.loading_indicator);
+        loadingDialogHandler.mLoadingDialogContainer = (ProgressBar) mUILayout.findViewById(R.id.loading_indicator);
 
         // Shows the loading indicator at start
-        loadingDialogHandler
-                .sendEmptyMessage(LoadingDialogHandler.SHOW_LOADING_DIALOG);
+        loadingDialogHandler.sendEmptyMessage(LoadingDialogHandler.SHOW_LOADING_DIALOG);
 
         // Adds the inflated layout to the view
-        addContentView(mUILayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
+        addContentView(mUILayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
     }
 
 
     // Methods to load and destroy tracking data.
     @Override
-    public boolean doLoadTrackersData()
-    {
+    public boolean doLoadTrackersData() {
         TrackerManager tManager = TrackerManager.getInstance();
         ObjectTracker objectTracker = (ObjectTracker) tManager
                 .getTracker(ObjectTracker.getClassType());
@@ -272,20 +250,16 @@ public class MainActivity extends CartonActivity
             return false;
 
         int mCurrentDatasetSelectionIndex = 0;
-        if (!mCurrentDataset.load(
-                mDatasetStrings.get(mCurrentDatasetSelectionIndex),
-                STORAGE_TYPE.STORAGE_APPRESOURCE))
+        if (!mCurrentDataset.load(mDatasetStrings.get(mCurrentDatasetSelectionIndex), STORAGE_TYPE.STORAGE_APPRESOURCE))
             return false;
 
         if (!objectTracker.activateDataSet(mCurrentDataset))
             return false;
 
         int numTrackables = mCurrentDataset.getNumTrackables();
-        for (int count = 0; count < numTrackables; count++)
-        {
+        for (int count = 0; count < numTrackables; count++) {
             Trackable trackable = mCurrentDataset.getTrackable(count);
-            if(isExtendedTrackingActive())
-            {
+            if(isExtendedTrackingActive()) {
                 trackable.startExtendedTracking();
             }
 
@@ -300,8 +274,7 @@ public class MainActivity extends CartonActivity
 
 
     @Override
-    public boolean doUnloadTrackersData()
-    {
+    public boolean doUnloadTrackersData() {
         // Indicate if the trackers were unloaded correctly
         boolean result = true;
 
@@ -311,14 +284,10 @@ public class MainActivity extends CartonActivity
         if (objectTracker == null)
             return false;
 
-        if (mCurrentDataset != null && mCurrentDataset.isActive())
-        {
-            if (objectTracker.getActiveDataSet().equals(mCurrentDataset)
-                    && !objectTracker.deactivateDataSet(mCurrentDataset))
-            {
+        if (mCurrentDataset != null && mCurrentDataset.isActive()) {
+            if (objectTracker.getActiveDataSet().equals(mCurrentDataset) && !objectTracker.deactivateDataSet(mCurrentDataset)) {
                 result = false;
-            } else if (!objectTracker.destroyDataSet(mCurrentDataset))
-            {
+            } else if (!objectTracker.destroyDataSet(mCurrentDataset)) {
                 result = false;
             }
 
@@ -330,11 +299,8 @@ public class MainActivity extends CartonActivity
 
 
     @Override
-    public void onInitARDone(SampleApplicationException exception)
-    {
-
-        if (exception == null)
-        {
+    public void onInitARDone(SampleApplicationException exception) {
+        if (exception == null) {
             initApplicationAR();
 
             mRenderer.mIsActive = true;
@@ -352,15 +318,12 @@ public class MainActivity extends CartonActivity
             // Sets the layout background to transparent
             mUILayout.setBackgroundColor(Color.TRANSPARENT);
 
-            try
-            {
+            try {
                 vuforiaAppSession.startAR(CameraDevice.CAMERA.CAMERA_DEFAULT);
-            } catch (SampleApplicationException e)
-            {
+            } catch (SampleApplicationException e) {
                 Log.e(LOGTAG, e.getString());
             }
-        } else
-        {
+        } else {
             Log.e(LOGTAG, exception.getString());
             showInitializationErrorMessage(exception.getString());
         }
@@ -368,31 +331,24 @@ public class MainActivity extends CartonActivity
 
 
     // Shows initialization error messages as System dialogs
-    public void showInitializationErrorMessage(String message)
-    {
+    public void showInitializationErrorMessage(String message) {
         final String errorMessage = message;
-        runOnUiThread(new Runnable()
-        {
-            public void run()
-            {
-                if (mErrorDialog != null)
-                {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                if (mErrorDialog != null) {
                     mErrorDialog.dismiss();
                 }
 
                 // Generates an Alert Dialog to show the error message
-                AlertDialog.Builder builder = new AlertDialog.Builder(
-                        MainActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder
                         .setMessage(errorMessage)
                         .setTitle(getString(R.string.INIT_ERROR))
                         .setCancelable(false)
                         .setIcon(0)
                         .setPositiveButton(getString(R.string.button_OK),
-                                new DialogInterface.OnClickListener()
-                                {
-                                    public void onClick(DialogInterface dialog, int id)
-                                    {
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
                                         finish();
                                     }
                                 });
@@ -405,17 +361,13 @@ public class MainActivity extends CartonActivity
 
 
     @Override
-    public void onQCARUpdate(State state)
-    {
-        if (mSwitchDatasetAsap)
-        {
+    public void onQCARUpdate(State state) {
+        if (mSwitchDatasetAsap) {
             mSwitchDatasetAsap = false;
             TrackerManager tm = TrackerManager.getInstance();
             ObjectTracker ot = (ObjectTracker) tm.getTracker(ObjectTracker
                     .getClassType());
-            if (ot == null || mCurrentDataset == null
-                    || ot.getActiveDataSet() == null)
-            {
+            if (ot == null || mCurrentDataset == null || ot.getActiveDataSet() == null) {
                 Log.d(LOGTAG, "Failed to swap datasets");
                 return;
             }
@@ -427,8 +379,7 @@ public class MainActivity extends CartonActivity
 
 
     @Override
-    public boolean doInitTrackers()
-    {
+    public boolean doInitTrackers() {
         // Indicate if the trackers were initialized correctly
         boolean result = true;
 
@@ -437,14 +388,12 @@ public class MainActivity extends CartonActivity
 
         // Trying to initialize the image tracker
         tracker = tManager.initTracker(ObjectTracker.getClassType());
-        if (tracker == null)
-        {
+        if (tracker == null) {
             Log.e(
                     LOGTAG,
                     "Tracker not initialized. Tracker already initialized or the camera is already started");
             result = false;
-        } else
-        {
+        } else {
             Log.i(LOGTAG, "Tracker successfully initialized");
         }
         return result;
@@ -452,8 +401,7 @@ public class MainActivity extends CartonActivity
 
 
     @Override
-    public boolean doStartTrackers()
-    {
+    public boolean doStartTrackers() {
         // Indicate if the trackers were started correctly
 
         Tracker objectTracker = TrackerManager.getInstance().getTracker(
@@ -498,5 +446,31 @@ public class MainActivity extends CartonActivity
 
     boolean isExtendedTrackingActive() {
         return false;
+    }
+
+
+    public void handleTracked(Message msg) {
+        Bundle bundle = msg.getData();
+        Log.d(LOGTAG, "Image tracked > id : " + bundle.getInt(PosterTargetRenderer.ARG_TRACKABLE_ID) + " | name : " + bundle.getString(PosterTargetRenderer.ARG_TRACKABLE_NAME));
+    }
+
+
+    // static inner class to not hold an implicit reference to the outer class
+    private static class TrackingHandler extends Handler {
+
+        // using a weak reference to not prevent garbage collection
+        private final WeakReference<MainActivity> activityWeakReference;
+
+        public TrackingHandler(MainActivity activity) {
+            activityWeakReference = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            MainActivity activity = activityWeakReference.get();
+            if (activity != null) {
+                activity.handleTracked(msg);
+            }
+        }
     }
 }
