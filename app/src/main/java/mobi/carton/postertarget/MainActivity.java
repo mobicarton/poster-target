@@ -74,6 +74,10 @@ public class MainActivity extends CartonActivity
     private RelativeLayout mRelativeLayoutBackground;
     private ImageView mImageViewSight;
 
+    private Animator mAnimatorBackgroundFadeOut;
+    private Handler mHandlerBackgroundFadeOut = new Handler();
+    private boolean mBackgroundIsGoingToFadeOut = false;
+
 
     // Called when the activity first starts or the user navigates back to an
     // activity.
@@ -201,6 +205,9 @@ public class MainActivity extends CartonActivity
 
         mRelativeLayoutBackground = (RelativeLayout) mUILayout.findViewById(R.id.relativeLayout_background);
         mImageViewSight = (ImageView) mUILayout.findViewById(R.id.imageView_sight);
+
+        mAnimatorBackgroundFadeOut = AnimatorInflater.loadAnimator(this, R.animator.fade_out);
+        mAnimatorBackgroundFadeOut.setTarget(mRelativeLayoutBackground);
     }
 
 
@@ -408,9 +415,21 @@ public class MainActivity extends CartonActivity
 
         int id = bundle.getInt(PosterTargetRenderer.ARG_TRACKABLE_ID);
 
-        Animator animator = AnimatorInflater.loadAnimator(this, id == 0 ? R.animator.fade_out : R.animator.fade_in);
-        animator.setTarget(mRelativeLayoutBackground);
-        animator.start();
+        // no target tracked
+        if (id == 0) {
+            mHandlerBackgroundFadeOut.postDelayed(new RunBackgroundFadeOut(), 5000);
+            mBackgroundIsGoingToFadeOut = true;
+        } else {
+            if (mBackgroundIsGoingToFadeOut) {
+                mHandlerBackgroundFadeOut.removeCallbacksAndMessages(null);
+                mBackgroundIsGoingToFadeOut = false;
+            }
+            else {
+                Animator animator = AnimatorInflater.loadAnimator(this, R.animator.fade_in);
+                animator.setTarget(mRelativeLayoutBackground);
+                animator.start();
+            }
+        }
     }
 
 
@@ -430,6 +449,17 @@ public class MainActivity extends CartonActivity
             if (activity != null) {
                 activity.handleTracked(msg);
             }
+        }
+    }
+    
+    
+    private class RunBackgroundFadeOut implements Runnable {
+
+
+        @Override
+        public void run() {
+            mAnimatorBackgroundFadeOut.start();
+            mBackgroundIsGoingToFadeOut = false;
         }
     }
 }
