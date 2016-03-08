@@ -8,6 +8,8 @@ countries.
 package mobi.carton.postertarget;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
@@ -72,6 +74,8 @@ public class MainActivity extends CartonActivity
     private AlertDialog mErrorDialog;
 
     boolean mIsDroidDevice = false;
+
+    private RelativeLayout mRelativeLayoutBackground;
 
 
     // Called when the activity first starts or the user navigates back to an
@@ -231,6 +235,7 @@ public class MainActivity extends CartonActivity
         // Adds the inflated layout to the view
         addContentView(mUILayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
+        mRelativeLayoutBackground = (RelativeLayout) mUILayout.findViewById(R.id.relativeLayout_background);
     }
 
 
@@ -452,6 +457,12 @@ public class MainActivity extends CartonActivity
     public void handleTracked(Message msg) {
         Bundle bundle = msg.getData();
         Log.d(LOGTAG, "Image tracked > id : " + bundle.getInt(PosterTargetRenderer.ARG_TRACKABLE_ID) + " | name : " + bundle.getString(PosterTargetRenderer.ARG_TRACKABLE_NAME));
+
+        int id = bundle.getInt(PosterTargetRenderer.ARG_TRACKABLE_ID);
+
+        Animator animator = AnimatorInflater.loadAnimator(this, id == 0 ? R.animator.fade_out : R.animator.fade_in);
+        animator.setTarget(mRelativeLayoutBackground);
+        animator.start();
     }
 
 
