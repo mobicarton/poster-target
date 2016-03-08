@@ -21,6 +21,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -71,6 +72,7 @@ public class MainActivity extends CartonActivity
     boolean mIsDroidDevice = false;
 
     private RelativeLayout mRelativeLayoutBackground;
+    private ImageView mImageViewSight;
 
 
     // Called when the activity first starts or the user navigates back to an
@@ -197,6 +199,7 @@ public class MainActivity extends CartonActivity
         addContentView(mUILayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         mRelativeLayoutBackground = (RelativeLayout) mUILayout.findViewById(R.id.relativeLayout_background);
+        mImageViewSight = (ImageView) mUILayout.findViewById(R.id.imageView_sight);
     }
 
 
@@ -279,6 +282,8 @@ public class MainActivity extends CartonActivity
 
             // Sets the layout background to transparent
             mUILayout.setBackgroundColor(Color.TRANSPARENT);
+
+            mImageViewSight.setVisibility(View.VISIBLE);
 
             try {
                 vuforiaAppSession.startAR(CameraDevice.CAMERA.CAMERA_DEFAULT);
