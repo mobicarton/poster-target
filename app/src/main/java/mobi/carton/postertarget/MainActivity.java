@@ -19,8 +19,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -60,9 +58,6 @@ public class MainActivity extends CartonActivity
     // Our renderer:
     private PosterTargetRenderer mRenderer;
 
-    private GestureDetector mGestureDetector;
-
-
     private boolean mSwitchDatasetAsap = false;
 
 
@@ -93,41 +88,7 @@ public class MainActivity extends CartonActivity
 
         vuforiaAppSession.initAR(this);
 
-        mGestureDetector = new GestureDetector(this, new GestureListener());
-
         mIsDroidDevice = android.os.Build.MODEL.toLowerCase().startsWith("droid");
-    }
-
-
-    // Process Single Tap event to trigger autofocus
-    private class GestureListener extends
-            GestureDetector.SimpleOnGestureListener {
-        // Used to set autofocus one second after a manual focus is triggered
-        private final Handler autofocusHandler = new Handler();
-
-
-        @Override
-        public boolean onDown(MotionEvent e) {
-            return true;
-        }
-
-
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            // Generates a Handler to trigger autofocus
-            // after 1 second
-            autofocusHandler.postDelayed(new Runnable() {
-                public void run() {
-                    boolean result = CameraDevice.getInstance().setFocusMode(
-                            CameraDevice.FOCUS_MODE.FOCUS_MODE_TRIGGERAUTO);
-
-                    if (!result)
-                        Log.e("SingleTapUp", "Unable to trigger focus");
-                }
-            }, 1000L);
-
-            return true;
-        }
     }
 
 
@@ -264,14 +225,10 @@ public class MainActivity extends CartonActivity
         int numTrackables = mCurrentDataset.getNumTrackables();
         for (int count = 0; count < numTrackables; count++) {
             Trackable trackable = mCurrentDataset.getTrackable(count);
-            if(isExtendedTrackingActive()) {
-                trackable.startExtendedTracking();
-            }
 
             String name = "Current Dataset : " + trackable.getName();
             trackable.setUserData(name);
-            Log.d(LOGTAG, "UserData:Set the following user data "
-                    + trackable.getUserData());
+            Log.d(LOGTAG, "UserData:Set the following user data " + trackable.getUserData());
         }
 
         return true;
@@ -370,8 +327,7 @@ public class MainActivity extends CartonActivity
         if (mSwitchDatasetAsap) {
             mSwitchDatasetAsap = false;
             TrackerManager tm = TrackerManager.getInstance();
-            ObjectTracker ot = (ObjectTracker) tm.getTracker(ObjectTracker
-                    .getClassType());
+            ObjectTracker ot = (ObjectTracker) tm.getTracker(ObjectTracker.getClassType());
             if (ot == null || mCurrentDataset == null || ot.getActiveDataSet() == null) {
                 Log.d(LOGTAG, "Failed to swap datasets");
                 return;
@@ -394,9 +350,7 @@ public class MainActivity extends CartonActivity
         // Trying to initialize the image tracker
         tracker = tManager.initTracker(ObjectTracker.getClassType());
         if (tracker == null) {
-            Log.e(
-                    LOGTAG,
-                    "Tracker not initialized. Tracker already initialized or the camera is already started");
+            Log.e(LOGTAG, "Tracker not initialized. Tracker already initialized or the camera is already started");
             result = false;
         } else {
             Log.i(LOGTAG, "Tracker successfully initialized");
@@ -439,18 +393,6 @@ public class MainActivity extends CartonActivity
         tManager.deinitTracker(ObjectTracker.getClassType());
 
         return true;
-    }
-
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        // Process the Gestures
-        return mGestureDetector.onTouchEvent(event);
-    }
-
-
-    boolean isExtendedTrackingActive() {
-        return false;
     }
 
 
