@@ -85,6 +85,7 @@ public class MainActivity extends CartonActivity
         vuforiaAppSession = new SampleApplicationSession(this);
 
         startLoadingAnimation();
+        mDatasetStrings.add("visions_of_the_future.xml");
         mDatasetStrings.add("StonesAndChips.xml");
         mDatasetStrings.add("Tarmac.xml");
 
