@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/camera_overlay_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/camera_overlay_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
 
     <ProgressBar
@@ -11,5 +12,23 @@
         android:layout_height="wrap_content"
         android:indeterminateDrawable="@drawable/progressbar_white"
         android:layout_centerInParent="true"/>
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/imageView_sight"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_action_new"
+            android:contentDescription="@string/contentDescription_sight"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>
