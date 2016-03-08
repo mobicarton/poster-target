@@ -50,9 +50,6 @@ public class SampleApplicationSession
     // Holds the camera configuration to use upon resuming
     private int mCamera = CameraDevice.CAMERA.CAMERA_DEFAULT;
 
-    // Stores orientation
-    private boolean mIsPortrait = false;
-
 
     public SampleApplicationSession(SampleApplicationControl sessionControl) {
         mSessionControl = sessionControl;
@@ -63,8 +60,6 @@ public class SampleApplicationSession
     public void initAR(Activity activity) {
         SampleApplicationException vuforiaException = null;
         mActivity = activity;
-
-        mIsPortrait = false;
 
         // Query display dimensions:
         storeScreenDimensions();

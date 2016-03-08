@@ -12,8 +12,7 @@ package mobi.carton.postertarget;
 import com.qualcomm.vuforia.State;
 
 //  Interface to be implemented by the activity which uses SampleApplicationSession
-public interface SampleApplicationControl
-{
+public interface SampleApplicationControl {
 
     // To be called to initialize the trackers
     boolean doInitTrackers();
@@ -48,5 +47,4 @@ public interface SampleApplicationControl
 
     // This callback is called every cycle
     void onQCARUpdate(State state);
-
 }

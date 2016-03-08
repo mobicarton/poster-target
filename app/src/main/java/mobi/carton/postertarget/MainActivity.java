@@ -20,6 +20,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.qualcomm.vuforia.CameraDevice;
@@ -63,7 +64,7 @@ public class MainActivity extends CartonActivity
 
     private RelativeLayout mUILayout;
 
-    LoadingDialogHandler loadingDialogHandler = new LoadingDialogHandler(this);
+    public LoadingDialogHandler loadingDialogHandler = new LoadingDialogHandler(this);
 
     // Alert Dialog used to display SDK errors
     private AlertDialog mErrorDialog;
@@ -240,7 +241,7 @@ public class MainActivity extends CartonActivity
         mUILayout.setBackgroundColor(Color.BLACK);
 
         // Gets a reference to the loading dialog
-        loadingDialogHandler.mLoadingDialogContainer = mUILayout
+        loadingDialogHandler.mLoadingDialogContainer = (ProgressBar) mUILayout
                 .findViewById(R.id.loading_indicator);
 
         // Shows the loading indicator at start
