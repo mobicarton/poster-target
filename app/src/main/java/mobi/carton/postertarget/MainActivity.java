@@ -95,8 +95,6 @@ public class MainActivity extends CartonActivity
 
         startLoadingAnimation();
         mDatasetStrings.add("visions_of_the_future.xml");
-        mDatasetStrings.add("StonesAndChips.xml");
-        mDatasetStrings.add("Tarmac.xml");
 
         vuforiaAppSession.initAR(this);
 
@@ -517,18 +515,6 @@ public class MainActivity extends CartonActivity
     
     
     private class RunBackgroundFadeOut implements Runnable {
-
-
-        @Override
-        public void run() {
-            mAnimatorBackgroundFadeOut.start();
-            mAnimatorTextFadeOut.start();
-            mBackgroundIsGoingToFadeOut = false;
-        }
-    }
-
-
-    private class RunFadeInAfterF implements Runnable {
 
 
         @Override
