@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Poster Target</string>
+    <string name="app_description">Get some additional information while watching NASA/JPL\'s wonderful posters</string>
 
     <string name="button_OK">OK</string>
 
