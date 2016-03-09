@@ -1,10 +1,3 @@
-/*===============================================================================
-Copyright (c) 2012-2015 Qualcomm Connected Experiences, Inc. All Rights Reserved.
-
-Vuforia is a trademark of PTC Inc., registered in the United States and other
-countries.
-===============================================================================*/
-
 package mobi.carton.postertarget;
 
 
@@ -40,6 +33,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import mobi.carton.library.CartonActivity;
+import mobi.carton.library.MirrorFrameLayout;
 
 
 public class MainActivity extends CartonActivity
@@ -63,7 +57,7 @@ public class MainActivity extends CartonActivity
     private boolean mSwitchDatasetAsap = false;
 
 
-    private RelativeLayout mUILayout;
+    private MirrorFrameLayout mUILayout;
 
     public LoadingDialogHandler loadingDialogHandler = new LoadingDialogHandler(this);
 
@@ -197,7 +191,7 @@ public class MainActivity extends CartonActivity
 
 
     private void startLoadingAnimation() {
-        mUILayout = (RelativeLayout) View.inflate(this, R.layout.camera_overlay, null);
+        mUILayout = (MirrorFrameLayout) View.inflate(this, R.layout.camera_overlay, null);
 
         mUILayout.setVisibility(View.VISIBLE);
         mUILayout.setBackgroundColor(Color.BLACK);
