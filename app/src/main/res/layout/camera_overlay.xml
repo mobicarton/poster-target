@@ -89,15 +89,17 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:fontFamily="sans-serif-light"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="8dp"/>
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="8dp"/>
 
 
             <TextView
                 android:id="@+id/textView_left"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/textView_title"
+                android:layout_above="@id/textView_title"
                 android:layout_toLeftOf="@id/fake_sight"
                 android:textSize="12sp"
                 android:fontFamily="sans-serif-light"
@@ -108,10 +110,11 @@
                 android:id="@+id/textView_right"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/textView_title"
+                android:layout_above="@+id/textView_title"
                 android:layout_toRightOf="@+id/fake_sight"
                 android:textSize="12sp"
                 android:fontFamily="sans-serif-light"
+                android:gravity="right"
                 android:layout_margin="8dp"/>
 
         </RelativeLayout>
