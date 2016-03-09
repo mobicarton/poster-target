@@ -3,6 +3,7 @@ package mobi.carton.postertarget;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
@@ -79,6 +80,8 @@ public class MainActivity extends CartonActivity
     private TextView mTextViewTitle;
     private TextView mTextViewLeft;
     private TextView mTextViewRight;
+
+    private String mCurrentTargetName;
 
 
     // Called when the activity first starts or the user navigates back to an
@@ -435,21 +438,59 @@ public class MainActivity extends CartonActivity
             if (mBackgroundIsGoingToFadeOut) {
                 mHandlerBackgroundFadeOut.removeCallbacksAndMessages(null);
                 mBackgroundIsGoingToFadeOut = false;
+
+                String lastTargetName = bundle.getString(PosterTargetRenderer.ARG_TRACKABLE_NAME);
+                if (lastTargetName != null && !lastTargetName.equals(mCurrentTargetName)) {
+                    mCurrentTargetName = lastTargetName;
+                    Animator animatorTextFadeOut = AnimatorInflater.loadAnimator(this, R.animator.fade_out);
+                    animatorTextFadeOut.addListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+
+                        }
+
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            if (mCurrentTargetName != null) {
+                                mTextViewTitle.setText(mCurrentTargetName.replace('_', ' '));
+                                mTextViewLeft.setText(getString(getResources().getIdentifier(mCurrentTargetName.concat("_left"), "string", getPackageName())));
+                                mTextViewRight.setText(getString(getResources().getIdentifier(mCurrentTargetName.concat("_right"), "string", getPackageName())));
+                            }
+                        }
+
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
+                    Animator animatorTextFadeIn = AnimatorInflater.loadAnimator(this, R.animator.fade_in);
+                    AnimatorSet animatorSet = new AnimatorSet();
+                    animatorSet.play(animatorTextFadeIn).after(animatorTextFadeOut);
+                    animatorSet.setTarget(mRelativeLayoutText);
+                    animatorSet.start();
+                }
             }
             else {
+                mCurrentTargetName = bundle.getString(PosterTargetRenderer.ARG_TRACKABLE_NAME);
+                if (mCurrentTargetName != null) {
+                    mTextViewTitle.setText(mCurrentTargetName.replace('_', ' '));
+                    mTextViewLeft.setText(getString(getResources().getIdentifier(mCurrentTargetName.concat("_left"), "string", getPackageName())));
+                    mTextViewRight.setText(getString(getResources().getIdentifier(mCurrentTargetName.concat("_right"), "string", getPackageName())));
+                }
                 Animator animatorBackground = AnimatorInflater.loadAnimator(this, R.animator.fade_in);
                 animatorBackground.setTarget(mRelativeLayoutBackground);
                 animatorBackground.start();
                 Animator animatorText = AnimatorInflater.loadAnimator(this, R.animator.fade_in);
                 animatorText.setTarget(mRelativeLayoutText);
                 animatorText.start();
-            }
-
-            String name = bundle.getString(PosterTargetRenderer.ARG_TRACKABLE_NAME);
-            if (name != null) {
-                mTextViewTitle.setText(name.replace('_', ' '));
-                mTextViewLeft.setText(getString(getResources().getIdentifier(name.concat("_left"), "string", getPackageName())));
-                mTextViewRight.setText(getString(getResources().getIdentifier(name.concat("_right"), "string", getPackageName())));
             }
         }
     }
@@ -476,6 +517,18 @@ public class MainActivity extends CartonActivity
     
     
     private class RunBackgroundFadeOut implements Runnable {
+
+
+        @Override
+        public void run() {
+            mAnimatorBackgroundFadeOut.start();
+            mAnimatorTextFadeOut.start();
+            mBackgroundIsGoingToFadeOut = false;
+        }
+    }
+
+
+    private class RunFadeInAfterF implements Runnable {
 
 
         @Override
