@@ -18,4 +18,12 @@
 
     <string name="contentDescription_sight">sight</string>
 
+
+    <string name="grand_tour_left">The twin spacecraft from NASA\'s Voyager mission revealed details about Jupiter, Saturn, Uranus and Neptune – using each planet\'s gravity to send them on to the next destination.</string>
+    <string name="grand_tour_right">Voyager set the stage for such ambitious orbiter missions as Galileo to Jupiter and Cassini to Saturn. Today both Voyager spacecraft continue to return valuable science from the far reaches of our solar system.</string>
+    <string name="earth_left">There\'s no place like home. Warm, wet and with an atmosphere that\'s just right, Earth is the only place we know of with life – and lots of it.</string>
+    <string name="earth_right">JPL\'s Earth science missions monitor our home planet and how it\'s changing so it can continue to provide a safe haven as we reach deeper into the cosmos.</string>
+    <string name="mars_left">NASA\'s Mars Exploration Program seeks to understand whether Mars was, is, or can be a habitable world. Mission like Mars Exploration Rovers, among many others, have provided important information in understanding of the habitability of Mars.</string>
+    <string name="mars_right">This poster imagines a future day when we have achieved our vision of human exploration of Mars and takes a nostalgic look back at the great imagined milestones of Mars exploration that will someday be celebrated as “historic sites.”</string>
+
 </resources>

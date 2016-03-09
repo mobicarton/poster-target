@@ -3,6 +3,20 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
         <item name="android:windowNoTitle">true</item>
+
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="lineVertical">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">16dp</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="lineHorizontal">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">16dp</item>
+        <item name="android:background">@android:color/white</item>
     </style>
 
 </resources>

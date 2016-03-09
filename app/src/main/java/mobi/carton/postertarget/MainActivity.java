@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.qualcomm.vuforia.CameraDevice;
 import com.qualcomm.vuforia.DataSet;
@@ -77,6 +78,10 @@ public class MainActivity extends CartonActivity
     private Animator mAnimatorBackgroundFadeOut;
     private Handler mHandlerBackgroundFadeOut = new Handler();
     private boolean mBackgroundIsGoingToFadeOut = false;
+
+    private TextView mTextViewTitle;
+    private TextView mTextViewLeft;
+    private TextView mTextViewRight;
 
 
     // Called when the activity first starts or the user navigates back to an
@@ -208,6 +213,10 @@ public class MainActivity extends CartonActivity
 
         mAnimatorBackgroundFadeOut = AnimatorInflater.loadAnimator(this, R.animator.fade_out);
         mAnimatorBackgroundFadeOut.setTarget(mRelativeLayoutBackground);
+
+        mTextViewTitle = (TextView) mUILayout.findViewById(R.id.textView_title);
+        mTextViewLeft = (TextView) mUILayout.findViewById(R.id.textView_left);
+        mTextViewRight = (TextView) mUILayout.findViewById(R.id.textView_right);
     }
 
 
@@ -429,6 +438,13 @@ public class MainActivity extends CartonActivity
                 animator.setTarget(mRelativeLayoutBackground);
                 animator.start();
             }
+
+            String name = bundle.getString(PosterTargetRenderer.ARG_TRACKABLE_NAME);
+            if (name != null) {
+                mTextViewTitle.setText(name.replace('_', ' '));
+                mTextViewLeft.setText(getString(getResources().getIdentifier(name.concat("_left"), "string", getPackageName())));
+                mTextViewRight.setText(getString(getResources().getIdentifier(name.concat("_right"), "string", getPackageName())));
+            }
         }
     }
 
@@ -460,6 +476,9 @@ public class MainActivity extends CartonActivity
         public void run() {
             mAnimatorBackgroundFadeOut.start();
             mBackgroundIsGoingToFadeOut = false;
+            mTextViewTitle.setText("");
+            mTextViewLeft.setText("");
+            mTextViewRight.setText("");
         }
     }
 }
