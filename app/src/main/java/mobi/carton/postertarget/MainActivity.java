@@ -75,8 +75,10 @@ public class MainActivity extends CartonActivity
     private RelativeLayout mRelativeLayoutBackground;
     private ImageView mImageViewSight;
     private RelativeLayout mRelativeLayoutCorners;
+    private RelativeLayout mRelativeLayoutText;
 
     private Animator mAnimatorBackgroundFadeOut;
+    private Animator mAnimatorTextFadeOut;
     private Handler mHandlerBackgroundFadeOut = new Handler();
     private boolean mBackgroundIsGoingToFadeOut = false;
 
@@ -212,9 +214,13 @@ public class MainActivity extends CartonActivity
         mRelativeLayoutBackground = (RelativeLayout) mUILayout.findViewById(R.id.relativeLayout_background);
         mImageViewSight = (ImageView) mUILayout.findViewById(R.id.imageView_sight);
         mRelativeLayoutCorners = (RelativeLayout) mUILayout.findViewById(R.id.relativeLayout_corners);
+        mRelativeLayoutText = (RelativeLayout) mUILayout.findViewById(R.id.relativeLayout_text);
 
         mAnimatorBackgroundFadeOut = AnimatorInflater.loadAnimator(this, R.animator.fade_out);
         mAnimatorBackgroundFadeOut.setTarget(mRelativeLayoutBackground);
+
+        mAnimatorTextFadeOut = AnimatorInflater.loadAnimator(this, R.animator.fade_out);
+        mAnimatorTextFadeOut.setTarget(mRelativeLayoutText);
 
         mTextViewTitle = (TextView) mUILayout.findViewById(R.id.textView_title);
         mTextViewLeft = (TextView) mUILayout.findViewById(R.id.textView_left);
@@ -437,9 +443,12 @@ public class MainActivity extends CartonActivity
                 mBackgroundIsGoingToFadeOut = false;
             }
             else {
-                Animator animator = AnimatorInflater.loadAnimator(this, R.animator.fade_in);
-                animator.setTarget(mRelativeLayoutBackground);
-                animator.start();
+                Animator animatorBackground = AnimatorInflater.loadAnimator(this, R.animator.fade_in);
+                animatorBackground.setTarget(mRelativeLayoutBackground);
+                animatorBackground.start();
+                Animator animatorText = AnimatorInflater.loadAnimator(this, R.animator.fade_in);
+                animatorText.setTarget(mRelativeLayoutText);
+                animatorText.start();
             }
 
             String name = bundle.getString(PosterTargetRenderer.ARG_TRACKABLE_NAME);
@@ -478,10 +487,8 @@ public class MainActivity extends CartonActivity
         @Override
         public void run() {
             mAnimatorBackgroundFadeOut.start();
+            mAnimatorTextFadeOut.start();
             mBackgroundIsGoingToFadeOut = false;
-            mTextViewTitle.setText("");
-            mTextViewLeft.setText("");
-            mTextViewRight.setText("");
         }
     }
 }

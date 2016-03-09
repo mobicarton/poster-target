@@ -68,35 +68,49 @@
         android:alpha="0"/>
 
 
-    <TextView
-        android:id="@+id/textView_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:fontFamily="sans-serif-light"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp"/>
-
-
-    <TextView
-        android:id="@+id/textView_left"
+    <RelativeLayout
+        android:id="@+id/relativeLayout_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/textView_title"
-        android:layout_toLeftOf="@id/imageView_sight"
-        android:textSize="12sp"
-        android:fontFamily="sans-serif-light"
-        android:layout_margin="8dp"/>
+        android:alpha="0">
+
+        <View
+            android:id="@+id/fake_sight"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerInParent="true"/>
+
+        <TextView
+            android:id="@+id/textView_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-light"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"/>
 
 
-    <TextView
-        android:id="@+id/textView_right"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/textView_title"
-        android:layout_toRightOf="@+id/imageView_sight"
-        android:textSize="12sp"
-        android:fontFamily="sans-serif-light"
-        android:layout_margin="8dp"/>
+        <TextView
+            android:id="@+id/textView_left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/textView_title"
+            android:layout_toLeftOf="@id/fake_sight"
+            android:textSize="12sp"
+            android:fontFamily="sans-serif-light"
+            android:layout_margin="8dp"/>
+
+
+        <TextView
+            android:id="@+id/textView_right"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/textView_title"
+            android:layout_toRightOf="@+id/fake_sight"
+            android:textSize="12sp"
+            android:fontFamily="sans-serif-light"
+            android:layout_margin="8dp"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>
