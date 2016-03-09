@@ -34,12 +34,14 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import mobi.carton.library.CartonActivity;
+import mobi.carton.library.HeadRecognition;
 import mobi.carton.library.MirrorFrameLayout;
 
 
 public class MainActivity extends CartonActivity
         implements
-        SampleApplicationControl {
+        SampleApplicationControl,
+        HeadRecognition.OnHeadGestureListener {
 
 
     private static final String LOGTAG = "ImageTargets";
@@ -83,6 +85,8 @@ public class MainActivity extends CartonActivity
 
     private String mCurrentTargetName;
 
+    private HeadRecognition mHeadRecognition;
+
 
     // Called when the activity first starts or the user navigates back to an
     // activity.
@@ -99,6 +103,9 @@ public class MainActivity extends CartonActivity
         vuforiaAppSession.initAR(this);
 
         mIsDroidDevice = android.os.Build.MODEL.toLowerCase().startsWith("droid");
+
+        mHeadRecognition = new HeadRecognition(this);
+        mHeadRecognition.setOnHeadGestureListener(this);
     }
 
 
@@ -125,6 +132,8 @@ public class MainActivity extends CartonActivity
             mGlView.setVisibility(View.VISIBLE);
             mGlView.onResume();
         }
+
+        mHeadRecognition.start();
     }
 
 
@@ -154,6 +163,8 @@ public class MainActivity extends CartonActivity
         } catch (SampleApplicationException e) {
             Log.e(LOGTAG, e.getString());
         }
+
+        mHeadRecognition.stop();
     }
 
 
@@ -490,6 +501,22 @@ public class MainActivity extends CartonActivity
                 animatorText.setTarget(mRelativeLayoutText);
                 animatorText.start();
             }
+        }
+    }
+
+
+    @Override
+    public void onTilt(int direction) {
+
+    }
+
+
+    @Override
+    public void onNod(int direction) {
+        switch (direction) {
+            case HeadRecognition.NOD_UP:
+                onBackPressed();
+                break;
         }
     }
 
