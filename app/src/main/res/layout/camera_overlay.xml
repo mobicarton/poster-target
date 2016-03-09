@@ -14,12 +14,41 @@
 
 
     <RelativeLayout
-        android:id="@+id/relativeLayout_background"
+        android:id="@+id/relativeLayout_corners"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#BB424242"
-        android:alpha="0"/>
+        android:visibility="gone">
 
+
+        <View
+            style="@style/lineHorizontal"/>
+        <View
+            style="@style/lineVertical"/>
+
+        <View
+            style="@style/lineHorizontal"
+            android:layout_alignParentRight="true"/>
+        <View
+            style="@style/lineVertical"
+            android:layout_alignParentRight="true"/>
+
+        <View
+            style="@style/lineHorizontal"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"/>
+        <View
+            style="@style/lineVertical"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"/>
+
+        <View
+            style="@style/lineHorizontal"
+            android:layout_alignParentBottom="true"/>
+        <View
+            style="@style/lineVertical"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/imageView_sight"
@@ -30,6 +59,15 @@
         android:contentDescription="@string/contentDescription_sight"
         android:visibility="gone"/>
 
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#BB424242"
+        android:alpha="0"/>
+
+
     <TextView
         android:id="@+id/textView_title"
         android:layout_width="wrap_content"
@@ -38,6 +76,7 @@
         android:fontFamily="sans-serif-light"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"/>
+
 
     <TextView
         android:id="@+id/textView_left"
@@ -48,6 +87,7 @@
         android:textSize="12sp"
         android:fontFamily="sans-serif-light"
         android:layout_margin="8dp"/>
+
 
     <TextView
         android:id="@+id/textView_right"

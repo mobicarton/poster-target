@@ -74,6 +74,7 @@ public class MainActivity extends CartonActivity
 
     private RelativeLayout mRelativeLayoutBackground;
     private ImageView mImageViewSight;
+    private RelativeLayout mRelativeLayoutCorners;
 
     private Animator mAnimatorBackgroundFadeOut;
     private Handler mHandlerBackgroundFadeOut = new Handler();
@@ -210,6 +211,7 @@ public class MainActivity extends CartonActivity
 
         mRelativeLayoutBackground = (RelativeLayout) mUILayout.findViewById(R.id.relativeLayout_background);
         mImageViewSight = (ImageView) mUILayout.findViewById(R.id.imageView_sight);
+        mRelativeLayoutCorners = (RelativeLayout) mUILayout.findViewById(R.id.relativeLayout_corners);
 
         mAnimatorBackgroundFadeOut = AnimatorInflater.loadAnimator(this, R.animator.fade_out);
         mAnimatorBackgroundFadeOut.setTarget(mRelativeLayoutBackground);
@@ -301,6 +303,7 @@ public class MainActivity extends CartonActivity
             mUILayout.setBackgroundColor(Color.TRANSPARENT);
 
             mImageViewSight.setVisibility(View.VISIBLE);
+            mRelativeLayoutCorners.setVisibility(View.VISIBLE);
 
             try {
                 vuforiaAppSession.startAR(CameraDevice.CAMERA.CAMERA_DEFAULT);
