@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
   <Tracking>
+    <ImageTarget name="europa" size="100.000000 149.217941" />
+    <ImageTarget name="titan" size="100.000000 149.322205" />
+    <ImageTarget name="enceladus" size="100.000000 149.322205" />
+    <ImageTarget name="jupiter" size="100.000000 149.322205" />
+    <ImageTarget name="ceres" size="100.000000 149.322205" />
+    <ImageTarget name="venus" size="100.000000 149.322205" />
     <ImageTarget name="mars" size="100.000000 149.217941" />
     <ImageTarget name="earth" size="100.000000 149.320801" />
     <ImageTarget name="grand_tour" size="100.000000 148.956161" />

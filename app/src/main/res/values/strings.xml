@@ -26,5 +26,17 @@
     <string name="earth_right">JPL\'s Earth science missions monitor our home planet and how it\'s changing so it can continue to provide a safe haven as we reach deeper into the cosmos.</string>
     <string name="mars_left">NASA\'s Mars Exploration Program seeks to understand whether Mars was, is, or can be a habitable world. Mission like Mars Exploration Rovers, among many others, have provided important information in understanding of the habitability of Mars.</string>
     <string name="mars_right">This poster imagines a future day when we have achieved our vision of human exploration of Mars and takes a nostalgic look back at the great imagined milestones of Mars exploration that will someday be celebrated as “historic sites.”</string>
+    <string name="venus_left">The rare science opportunity of planetary transits has long inspired bold voyages to exotic vantage points – journeys such as James Cook\'s trek to the South Pacific to watch Venus and Mercury cross the face of the Sun in 1769.</string>
+    <string name="venus_right">Spacecraft now allow us the luxury to study these cosmic crossings at times of our choosing from unique locales across our solar system.</string>
+    <string name="ceres_left">Ceres is the closest dwarf planet to the Sun. It is the largest object in the main asteroid belt between Mars and Jupiter, with an equatorial diameter of about 965 kilometers.</string>
+    <string name="ceres_right">Dawn\'s ongoing detailed observations are revealing intriguing insights into the nature of this mysterious world of ice and rock.</string>
+    <string name="jupiter_left">The Jovian cloudscape boasts the most spectacular light show in the solar system, with northern and southern lights to dazzle even the most jaded space traveler.</string>
+    <string name="jupiter_right">Jupiter\'s auroras are hundreds of times more powerful than Earth\'s, and they form a glowing ring around each pole that\'s bigger than our home planet.</string>
+    <string name="enceladus_left">The discovery of Enceladus\' icy jets and their role in creating Saturn\'s E-ring is one of the top findings of the Cassini mission to Saturn.</string>
+    <string name="enceladus_right">Cassini mission discoveries revealed strong evidence of a global ocean and the first signs of potential hydrothermal activity beyond Earth - making this tiny moon one of the leading locations in the search for possible life beyond Earth.</string>
+    <string name="titan_left">Frigid and alien, yet similar to our own planet billions of years ago, Saturn\'s largest moon, Titan, has a thick atmosphere, organic-rich chemistry and a surface shaped by rivers and lakes of liquid ethane and methane.</string>
+    <string name="titan_right">Cold winds sculpt vast regions of hydrocarbon-rich dunes. There may even be cryovolcanoes of cold liquid water. NASA\'s Cassini orbiter was designed to peer through Titan\'s perpetual haze and unravel the mysteries of this planet-like moon.</string>
+    <string name="europa_left">Astonishing geology and the potential to host the conditions for simple life make Jupiter\'s moon Europa a fascinating destination for future exploration.</string>
+    <string name="europa_right">Tugging and flexing from Jupiter\'s gravity generates enough heat to keep the ocean from freezing. On Earth, wherever we find water, we find life. What will NASA\'s Europa mission find when it heads for this intriguing moon in the 2020s</string>
 
 </resources>
