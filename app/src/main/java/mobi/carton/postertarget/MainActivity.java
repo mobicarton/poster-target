@@ -33,6 +33,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import mobi.carton.library.CartonActivity;
+import mobi.carton.library.CartonPrefs;
 import mobi.carton.library.HeadRecognition;
 
 
@@ -299,7 +300,11 @@ public class MainActivity extends CartonActivity
                     ViewGroup.LayoutParams.MATCH_PARENT));
 
             // Sets the UILayout to be drawn in front of the camera
-            mUILayout.bringToFront();
+            if (CartonPrefs.getWithoutCarton(getApplicationContext()))
+                mUILayout.bringToFront();
+            else
+                ((View) mUILayout.getParent()).bringToFront();
+
 
             // Sets the layout background to transparent
             mUILayout.setBackgroundColor(Color.TRANSPARENT);
