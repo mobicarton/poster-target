@@ -35,7 +35,6 @@ import java.util.ArrayList;
 
 import mobi.carton.library.CartonActivity;
 import mobi.carton.library.HeadRecognition;
-import mobi.carton.library.MirrorFrameLayout;
 
 
 public class MainActivity extends CartonActivity
@@ -60,7 +59,7 @@ public class MainActivity extends CartonActivity
     private boolean mSwitchDatasetAsap = false;
 
 
-    private MirrorFrameLayout mUILayout;
+    private RelativeLayout mUILayout;
 
     public LoadingDialogHandler loadingDialogHandler = new LoadingDialogHandler(this);
 
@@ -94,6 +93,8 @@ public class MainActivity extends CartonActivity
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(LOGTAG, "onCreate");
         super.onCreate(savedInstanceState);
+
+        // CartonPrefs.setWithoutCarton(getApplicationContext(), true);
 
         vuforiaAppSession = new SampleApplicationSession(this);
 
@@ -203,7 +204,7 @@ public class MainActivity extends CartonActivity
 
 
     private void startLoadingAnimation() {
-        mUILayout = (MirrorFrameLayout) View.inflate(this, R.layout.camera_overlay, null);
+        mUILayout = (RelativeLayout) View.inflate(this, R.layout.camera_overlay, null);
 
         mUILayout.setVisibility(View.VISIBLE);
         mUILayout.setBackgroundColor(Color.BLACK);

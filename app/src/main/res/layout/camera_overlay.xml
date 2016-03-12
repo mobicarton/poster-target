@@ -1,121 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mobi.carton.library.MirrorFrameLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ProgressBar
+        android:id="@+id/loading_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateDrawable="@drawable/progressbar_white"
+        android:layout_centerInParent="true"/>
+
+
     <RelativeLayout
+        android:id="@+id/relativeLayout_corners"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ProgressBar
-            android:id="@+id/loading_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminateDrawable="@drawable/progressbar_white"
-            android:layout_centerInParent="true"/>
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout_corners"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
+        <View
+            style="@style/lineHorizontal"/>
+        <View
+            style="@style/lineVertical"/>
 
+        <View
+            style="@style/lineHorizontal"
+            android:layout_alignParentRight="true"/>
+        <View
+            style="@style/lineVertical"
+            android:layout_alignParentRight="true"/>
 
-            <View
-                style="@style/lineHorizontal"/>
-            <View
-                style="@style/lineVertical"/>
+        <View
+            style="@style/lineHorizontal"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"/>
+        <View
+            style="@style/lineVertical"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"/>
 
-            <View
-                style="@style/lineHorizontal"
-                android:layout_alignParentRight="true"/>
-            <View
-                style="@style/lineVertical"
-                android:layout_alignParentRight="true"/>
-
-            <View
-                style="@style/lineHorizontal"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"/>
-            <View
-                style="@style/lineVertical"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"/>
-
-            <View
-                style="@style/lineHorizontal"
-                android:layout_alignParentBottom="true"/>
-            <View
-                style="@style/lineVertical"
-                android:layout_alignParentBottom="true"/>
-
-        </RelativeLayout>
-
-        <ImageView
-            android:id="@+id/imageView_sight"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_action_new"
-            android:contentDescription="@string/contentDescription_sight"
-            android:visibility="gone"/>
-
-
-        <RelativeLayout
-            android:id="@+id/relativeLayout_background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/background"
-            android:alpha="0"/>
-
-
-        <RelativeLayout
-            android:id="@+id/relativeLayout_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0">
-
-            <View
-                android:id="@+id/fake_sight"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_centerInParent="true"/>
-
-            <TextView
-                android:id="@+id/textView_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="8dp"
-                android:textSize="18sp"/>
-
-
-            <TextView
-                android:id="@+id/textView_left"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@id/textView_title"
-                android:layout_toLeftOf="@id/fake_sight"
-                android:layout_margin="8dp"
-                android:textSize="12sp"/>
-
-
-            <TextView
-                android:id="@+id/textView_right"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/textView_title"
-                android:layout_toRightOf="@+id/fake_sight"
-                android:layout_margin="8dp"
-                android:textSize="12sp"
-                android:gravity="right"/>
-
-        </RelativeLayout>
+        <View
+            style="@style/lineHorizontal"
+            android:layout_alignParentBottom="true"/>
+        <View
+            style="@style/lineVertical"
+            android:layout_alignParentBottom="true"/>
 
     </RelativeLayout>
 
-</mobi.carton.library.MirrorFrameLayout>
+    <ImageView
+        android:id="@+id/imageView_sight"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_action_new"
+        android:contentDescription="@string/contentDescription_sight"
+        android:visibility="gone"/>
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:alpha="0"/>
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0">
+
+        <View
+            android:id="@+id/fake_sight"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerInParent="true"/>
+
+        <TextView
+            android:id="@+id/textView_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp"
+            android:textSize="18sp"/>
+
+
+        <TextView
+            android:id="@+id/textView_left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/textView_title"
+            android:layout_toLeftOf="@id/fake_sight"
+            android:layout_margin="8dp"
+            android:textSize="12sp"/>
+
+
+        <TextView
+            android:id="@+id/textView_right"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/textView_title"
+            android:layout_toRightOf="@+id/fake_sight"
+            android:layout_margin="8dp"
+            android:textSize="12sp"
+            android:gravity="right"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
