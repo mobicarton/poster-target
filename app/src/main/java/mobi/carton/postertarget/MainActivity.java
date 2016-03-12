@@ -6,6 +6,7 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import mobi.carton.library.CartonActivity;
 import mobi.carton.library.CartonPrefs;
 import mobi.carton.library.HeadRecognition;
+import mobi.carton.library.LauncherActivity;
 
 
 public class MainActivity extends CartonActivity
@@ -43,7 +45,7 @@ public class MainActivity extends CartonActivity
         HeadRecognition.OnHeadGestureListener {
 
 
-    private static final String LOGTAG = "ImageTargets";
+    private static final String LOGTAG = MainActivity.class.getName();
 
     SampleApplicationSession vuforiaAppSession;
 
@@ -96,6 +98,7 @@ public class MainActivity extends CartonActivity
 
         vuforiaAppSession = new SampleApplicationSession(this);
 
+        initUI();
         startLoadingAnimation();
         mDatasetStrings.add("visions_of_the_future.xml");
 
@@ -103,6 +106,8 @@ public class MainActivity extends CartonActivity
 
         mHeadRecognition = new HeadRecognition(this);
         mHeadRecognition.setOnHeadGestureListener(this);
+
+        startDefaultLauncher();
     }
 
 
@@ -193,7 +198,33 @@ public class MainActivity extends CartonActivity
     }
 
 
-    private void startLoadingAnimation() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == LauncherActivity.CODE_LAUNCHER) {
+            if (resultCode == RESULT_OK) {
+                boolean without = data.getBooleanExtra(LauncherActivity.EXTRA_WITHOUT, false);
+                setWithoutCarton(without);
+
+                ViewGroup v = (ViewGroup) mUILayout.getParent();
+                if (v != null) {
+                    v.removeView(mUILayout);
+                } else {
+                    mUILayout.removeAllViews();
+                }
+                initUI();
+                loadingDialogHandler.mLoadingDialogContainer.setVisibility(View.GONE);
+                mUILayout.setBackgroundColor(Color.TRANSPARENT);
+                mImageViewSight.setVisibility(View.VISIBLE);
+                mRelativeLayoutCorners.setVisibility(View.VISIBLE);
+
+            } else if (resultCode == RESULT_CANCELED) {
+                finish();
+            }
+        }
+    }
+
+
+    private void initUI() {
         mUILayout = (RelativeLayout) View.inflate(this, R.layout.camera_overlay, null);
 
         mUILayout.setVisibility(View.VISIBLE);
@@ -201,9 +232,6 @@ public class MainActivity extends CartonActivity
 
         // Gets a reference to the loading dialog
         loadingDialogHandler.mLoadingDialogContainer = (ProgressBar) mUILayout.findViewById(R.id.loading_indicator);
-
-        // Shows the loading indicator at start
-        loadingDialogHandler.sendEmptyMessage(LoadingDialogHandler.SHOW_LOADING_DIALOG);
 
         // Adds the inflated layout to the view
         addContentView(mUILayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -222,6 +250,12 @@ public class MainActivity extends CartonActivity
         mTextViewTitle = (TextView) mUILayout.findViewById(R.id.textView_title);
         mTextViewLeft = (TextView) mUILayout.findViewById(R.id.textView_left);
         mTextViewRight = (TextView) mUILayout.findViewById(R.id.textView_right);
+    }
+
+
+    private void startLoadingAnimation() {
+        // Shows the loading indicator at start
+        loadingDialogHandler.sendEmptyMessage(LoadingDialogHandler.SHOW_LOADING_DIALOG);
     }
 
 
