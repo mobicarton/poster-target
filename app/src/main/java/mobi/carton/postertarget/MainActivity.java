@@ -6,7 +6,6 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -66,8 +65,6 @@ public class MainActivity extends CartonActivity
     // Alert Dialog used to display SDK errors
     private AlertDialog mErrorDialog;
 
-    boolean mIsDroidDevice = false;
-
     private RelativeLayout mRelativeLayoutBackground;
     private ImageView mImageViewSight;
     private RelativeLayout mRelativeLayoutCorners;
@@ -103,8 +100,6 @@ public class MainActivity extends CartonActivity
 
         vuforiaAppSession.initAR(this);
 
-        mIsDroidDevice = android.os.Build.MODEL.toLowerCase().startsWith("droid");
-
         mHeadRecognition = new HeadRecognition(this);
         mHeadRecognition.setOnHeadGestureListener(this);
     }
@@ -115,12 +110,6 @@ public class MainActivity extends CartonActivity
     protected void onResume() {
         Log.d(LOGTAG, "onResume");
         super.onResume();
-
-        // This is needed for some Droid devices to force portrait
-        if (mIsDroidDevice) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
 
         try {
             vuforiaAppSession.resumeAR();
