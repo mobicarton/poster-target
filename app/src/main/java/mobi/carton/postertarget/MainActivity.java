@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -42,7 +44,8 @@ import mobi.carton.library.LauncherActivity;
 public class MainActivity extends CartonActivity
         implements
         SampleApplicationControl,
-        HeadRecognition.OnHeadGestureListener {
+        HeadRecognition.OnHeadGestureListener,
+        GestureDetector.OnGestureListener {
 
 
     private static final String LOGTAG = MainActivity.class.getName();
@@ -86,6 +89,8 @@ public class MainActivity extends CartonActivity
 
     private HeadRecognition mHeadRecognition;
 
+    private GestureDetector mGestureDetector;
+
 
     // Called when the activity first starts or the user navigates back to an
     // activity.
@@ -107,7 +112,81 @@ public class MainActivity extends CartonActivity
         mHeadRecognition = new HeadRecognition(this);
         mHeadRecognition.setOnHeadGestureListener(this);
 
+        mGestureDetector = new GestureDetector(this, this);
+
         startDefaultLauncher();
+    }
+
+
+    private int getDirection(float x1, float y1, float x2, float y2) {
+        Double angle = Math.toDegrees(Math.atan2(y1 - y2, x2 - x1));
+
+        int direction = 0;
+
+        // Right
+        if (45 >= angle && angle > -45) {
+            direction = 1;
+        } else
+
+            // Down (back == up with head)
+            if (-45 >= angle && angle > -135) {
+                direction = HeadRecognition.NOD_UP;
+            } else
+
+                // Left
+                if (-135 >= angle && angle >= -180 || 180 >= angle && angle > 135) {
+                    direction = 0;
+                } else
+
+                    // Up (go == down with head)
+                    if (135 >= angle && angle > 45) {
+                        direction = HeadRecognition.NOD_DOWN;
+                    }
+
+        return direction;
+    }
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return mGestureDetector.onTouchEvent(event);
+    }
+
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
+    }
+
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+
+    }
+
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        return false;
+    }
+
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+
+    }
+
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        actionDirection(getDirection(e1.getX(), e1.getY(), e2.getX(), e2.getY()));
+        return false;
     }
 
 
@@ -542,6 +621,10 @@ public class MainActivity extends CartonActivity
 
     @Override
     public void onNod(int direction) {
+        actionDirection(direction);
+    }
+
+    private void actionDirection(int direction) {
         switch (direction) {
             case HeadRecognition.NOD_UP:
                 onBackPressed();
