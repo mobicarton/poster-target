@@ -570,10 +570,10 @@ public class MainActivity extends CartonActivity
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             if (mCurrentTargetName != null) {
-                                mTextViewTitle.setText(mCurrentTargetName.replace('_', ' ').replace("regular", ""));
                                 if (CartonPrefs.getWithoutCarton(getApplicationContext())) {            // if launched without Carton viewer
                                     mCurrentTargetName = mCurrentTargetName.replace("_regular", "");    // remove regular from the target name
                                 }
+                                mTextViewTitle.setText(mCurrentTargetName.replace('_', ' '));
                                 mTextViewLeft.setText(getString(getResources().getIdentifier(mCurrentTargetName.concat("_left"), "string", getPackageName())));
                                 mTextViewRight.setText(getString(getResources().getIdentifier(mCurrentTargetName.concat("_right"), "string", getPackageName())));
                             }
@@ -604,6 +604,7 @@ public class MainActivity extends CartonActivity
                     if (CartonPrefs.getWithoutCarton(getApplicationContext())) {            // if launched without Carton viewer
                         mCurrentTargetName = mCurrentTargetName.replace("_regular", "");    // remove regular from the target name
                     }
+                    mTextViewTitle.setText(mCurrentTargetName.replace('_', ' '));
                     mTextViewLeft.setText(getString(getResources().getIdentifier(mCurrentTargetName.concat("_left"), "string", getPackageName())));
                     mTextViewRight.setText(getString(getResources().getIdentifier(mCurrentTargetName.concat("_right"), "string", getPackageName())));
                 }
