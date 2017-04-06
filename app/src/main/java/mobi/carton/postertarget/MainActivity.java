@@ -570,9 +570,10 @@ public class MainActivity extends CartonActivity
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             if (mCurrentTargetName != null) {
-                                if (CartonPrefs.getWithoutCarton(getApplicationContext())) {            // if launched without Carton viewer
-                                    mCurrentTargetName = mCurrentTargetName.replace("_regular", "");    // remove regular from the target name
-                                }
+                                //if (CartonPrefs.getWithoutCarton(getApplicationContext())) {
+                                    // if launched without Carton viewer remove regular from the target name
+                                    mCurrentTargetName = mCurrentTargetName.replace("_regular", "");
+                                //}
                                 mTextViewTitle.setText(mCurrentTargetName.replace('_', ' '));
                                 mTextViewLeft.setText(getString(getResources().getIdentifier(mCurrentTargetName.concat("_left"), "string", getPackageName())));
                                 mTextViewRight.setText(getString(getResources().getIdentifier(mCurrentTargetName.concat("_right"), "string", getPackageName())));
@@ -601,9 +602,10 @@ public class MainActivity extends CartonActivity
             else {
                 mCurrentTargetName = bundle.getString(PosterTargetRenderer.ARG_TRACKABLE_NAME);
                 if (mCurrentTargetName != null) {
-                    if (CartonPrefs.getWithoutCarton(getApplicationContext())) {            // if launched without Carton viewer
-                        mCurrentTargetName = mCurrentTargetName.replace("_regular", "");    // remove regular from the target name
-                    }
+                    //if (CartonPrefs.getWithoutCarton(getApplicationContext())) {
+                        // if launched without Carton viewer remove regular from the target name
+                        mCurrentTargetName = mCurrentTargetName.replace("_regular", "");
+                    //}
                     mTextViewTitle.setText(mCurrentTargetName.replace('_', ' '));
                     mTextViewLeft.setText(getString(getResources().getIdentifier(mCurrentTargetName.concat("_left"), "string", getPackageName())));
                     mTextViewRight.setText(getString(getResources().getIdentifier(mCurrentTargetName.concat("_right"), "string", getPackageName())));
