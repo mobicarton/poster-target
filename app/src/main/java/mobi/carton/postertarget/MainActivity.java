@@ -114,7 +114,15 @@ public class MainActivity extends CartonActivity
 
         mGestureDetector = new GestureDetector(this, this);
 
-        startDefaultLauncher();
+        Intent intent = getIntent();
+
+        if (intent.hasExtra(CartonActivity.EXTRA_WITHOUT_CARTON)) {
+            CartonPrefs.setWithoutCarton(getApplicationContext(), intent.getBooleanExtra(CartonActivity.EXTRA_WITHOUT_CARTON, false));
+        } else if (!intent.getBooleanExtra(EXTRA_NO_LAUNCHER, false)) {
+            Intent intentLauncher = new Intent(this, CustomLauncherActivity.class);
+            startActivity(intentLauncher);
+            finish();
+        }
     }
 
 
