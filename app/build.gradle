@@ -46,5 +46,5 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
 
-    compile 'mobi.carton:library:0.0.9'
+    compile 'mobi.carton:library:0.1.0'
 }

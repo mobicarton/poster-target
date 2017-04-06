@@ -282,7 +282,7 @@ public class MainActivity extends CartonActivity
         if (requestCode == LauncherActivity.CODE_LAUNCHER) {
             if (resultCode == RESULT_OK) {
                 boolean without = data.getBooleanExtra(LauncherActivity.EXTRA_WITHOUT, false);
-                setWithoutCarton(without);
+                CartonPrefs.setWithoutCarton(getApplicationContext(), without);
 
                 ViewGroup v = (ViewGroup) mUILayout.getParent();
                 if (v != null) {
@@ -629,6 +629,13 @@ public class MainActivity extends CartonActivity
     public void onNod(int direction) {
         actionDirection(direction);
     }
+
+
+    @Override
+    public void onShake() {
+
+    }
+
 
     private void actionDirection(int direction) {
         switch (direction) {
